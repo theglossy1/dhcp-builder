@@ -58,7 +58,7 @@ watch(numberFormat, (newFormat, oldFormat) => {
   if (selectedType.value?.type !== 'number') return
   const num = parseInt(inputValue.value, oldFormat === 'hex' ? 16 : 10)
   if (!isNaN(num)) {
-    inputValue.value = newFormat === 'hex' ? num.toString(16) : num.toString(10)
+    inputValue.value = newFormat === 'hex' ? num.toString(16).padStart(2, '0') : num.toString(10)
   }
 })
 
@@ -83,7 +83,7 @@ watch(stringFormat, (newFormat, oldFormat) => {
   }
 })
 
-// --- NEW: Dynamic validation ---
+// Dynamic validation ---
 watch([inputValue, numberFormat, selectedType], () => {
   if (selectedType.value?.type !== 'number') {
     errorMessage.value = ""
@@ -100,20 +100,20 @@ watch([inputValue, numberFormat, selectedType], () => {
 
   if (numberFormat.value === 'hex') {
     if (!/^[0-9a-f]{1,2}$/i.test(val)) {
-      errorMessage.value = "Enter a valid hex value (00-ff)"
+      errorMessage.value = "Enter a valid hex value between 00 and FF"
       return
     }
     const num = parseInt(val, 16)
     if (num < 0 || num > 255) {
-      errorMessage.value = "Hex value must be between 00 and ff"
+      errorMessage.value = "Hex value must be between 00 and FF"
       return
     }
   }
 
   if (numberFormat.value === 'dec') {
     const num = Number(val)
-    if (!/^\d{1,3}$/.test(val) || isNaN(num) || num < 0 || num > 255) {
-      errorMessage.value = "Enter a valid decimal number (0-255)";
+    if (isNaN(num) || num < 0 || num > 255) {
+      errorMessage.value = "Decimal number must be between 0 and 255";
       return
     }
   }
