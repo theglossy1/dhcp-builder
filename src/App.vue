@@ -49,6 +49,7 @@ const types = {
   "120": {
     "name": "SIP Servers",
     "type": "string",
+    "output": "custom",
     "hint": "Enter a comma-separated list of FQDNs or IP addresses. Examples: '192.0.2.47,198.18.6.2' or 'sip.example.com,slurp.example.info'",
     "array": true
   },
@@ -56,13 +57,13 @@ const types = {
     "name": "Polycom Phone VLAN ID",
     "type": "string",
     "default": "VLAN-A=",
-    "help": "Typical format is 'VLAN-A=xxxx;' where xxxx is VLAN number (decimal). Examples: 'VLAN-A=2;' or 'VLAN-A=4088;'. Polycom documentation refers to this as a DVD (DHCP VLAN Discovery) string",
+    "hint": "Typical format is 'VLAN-A=xxxx;' where xxxx is VLAN number (decimal). Examples: 'VLAN-A=2;' or 'VLAN-A=4088;'. Polycom documentation refers to this as a DVD (DHCP VLAN Discovery) string",
     "help_url": "https://docs.poly.com/bundle/ccx-opensip-pg-current/page/c-ucs-ag-valid-dvd-string-dhcp-options.html"
   },
   "132": {
     "name": "VoIP VLAN ID",
     "type": "number",
-    "help": "VLAN ID (in decimal format)",
+    "hint": "VLAN ID (in decimal format)",
     "min": 1,
     "max": 4094
   },
@@ -70,7 +71,7 @@ const types = {
     "name": "Polycom Phone VLAN ID",
     "type": "string",
     "default": "VLAN-A=",
-    "help": "Typical format is 'VLAN-A=xxxx;' where xxxx is VLAN number (decimal). Examples: 'VLAN-A=2;' or 'VLAN-A=4088;'. Polycom documentation refers to this as a DVD (DHCP VLAN Discovery) string",
+    "hint": "Typical format is 'VLAN-A=xxxx;' where xxxx is VLAN number (decimal). Examples: 'VLAN-A=2;' or 'VLAN-A=4088;'. Polycom documentation refers to this as a DVD (DHCP VLAN Discovery) string",
     "help_url": "https://docs.poly.com/bundle/ccx-opensip-pg-current/page/c-ucs-ag-valid-dvd-string-dhcp-options.html"
   },
 }
@@ -160,12 +161,27 @@ function verify() {
     optionCode: selectedKey.value,
     name: selectedType.value?.name || '',
     type: selectedType.value?.type || '',
+    output: selectedType.value?.output || '',
     value: inputValue.value,
     format: selectedType.value?.type === 'number'
       ? numberFormat.value
       : selectedType.value?.type === 'string'
         ? stringFormat.value
         : undefined
+  }
+
+  if (data.output == "custom") {
+    switch (data.optionCode) {
+      case "120":
+        console.log("One twenty");
+        break;
+    }
+  } else {
+    switch (data.type) {
+      case "ip_address":
+        console.log("IP");
+        break;
+    }
   }
 
   console.log('Submitted:', data)
