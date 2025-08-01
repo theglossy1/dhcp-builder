@@ -1,6 +1,12 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 
+/*
+There should be something to allow override of checks. For example, in Calix, we restricted option 66 strictly to
+what the RFC outlined. But that bit us in the butt later when people had put a generic string in. So for every option
+there should be the ability to discard all automatic behavior.
+*/
+
 const types = {
   "3": {
     "name": "Router",
@@ -38,8 +44,35 @@ const types = {
   },
   "66": {
     "name": "TFTP Server",
+    "type": "string",
+  },
+  "120": {
+    "name": "SIP Servers",
+    "type": "string",
+    "hint": "Enter a comma-separated list of FQDNs or IP addresses. Examples: '192.0.2.47,198.18.6.2' or 'sip.example.com,slurp.example.info'",
+    "array": true
+  },
+  "128": {
+    "name": "Polycom Phone VLAN ID",
+    "type": "string",
+    "default": "VLAN-A=",
+    "help": "Typical format is 'VLAN-A=xxxx;' where xxxx is VLAN number (decimal). Examples: 'VLAN-A=2;' or 'VLAN-A=4088;'. Polycom documentation refers to this as a DVD (DHCP VLAN Discovery) string",
+    "help_url": "https://docs.poly.com/bundle/ccx-opensip-pg-current/page/c-ucs-ag-valid-dvd-string-dhcp-options.html"
+  },
+  "132": {
+    "name": "VoIP VLAN ID",
     "type": "number",
-  }
+    "help": "VLAN ID (in decimal format)",
+    "min": 1,
+    "max": 4094
+  },
+  "144": {
+    "name": "Polycom Phone VLAN ID",
+    "type": "string",
+    "default": "VLAN-A=",
+    "help": "Typical format is 'VLAN-A=xxxx;' where xxxx is VLAN number (decimal). Examples: 'VLAN-A=2;' or 'VLAN-A=4088;'. Polycom documentation refers to this as a DVD (DHCP VLAN Discovery) string",
+    "help_url": "https://docs.poly.com/bundle/ccx-opensip-pg-current/page/c-ucs-ag-valid-dvd-string-dhcp-options.html"
+  },
 }
 
 const typeEntries = Object.entries(types)
